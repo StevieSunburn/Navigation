@@ -13,19 +13,19 @@ typedef struct{
     char *grid;
     int maxX;
     int maxY;
-} navigation_t;
+} navigation_t; // Object of the grid
 
 typedef struct{
     int x;
     int y;
-} position_t;
+} position_t; // Object of the position
 
 void newGrid(navigation_t *nav){
     printf("Number of rows? ");
     scanf(" %i", &(nav->maxY));
     printf("Number of columns? ");
     scanf(" %i", &(nav->maxX));
-}
+} // Function to get input for the size of the grid
 
 void cleanNav(navigation_t nav){
     if(nav.grid != NULL){
@@ -33,7 +33,7 @@ void cleanNav(navigation_t nav){
         nav.maxX = 0;
         nav.maxY = 0;
     }
-}
+} // Reseting the variables and freeing the grid pointer
 
 void inputGrid(navigation_t nav){
     int score = 0;
@@ -56,7 +56,7 @@ void inputGrid(navigation_t nav){
             output = 0;
         }
     }
-}
+} //Inputing the maze 
 
 
 void printGrid(navigation_t nav){
@@ -65,7 +65,7 @@ void printGrid(navigation_t nav){
                 printf("%c", nav.grid[i * nav.maxX+j]);    }
         printf("\n");    
     }
-}
+} // Printing the maze
 
 position_t findStart(navigation_t nav){
     position_t pos; 
@@ -81,7 +81,7 @@ position_t findStart(navigation_t nav){
         }
     }
     return pos;
-}
+} // Finding starting position and assigning it to the object
 
 void resetPath(navigation_t nav){
     for(int i = 0; i < nav.maxX * nav.maxY; i++) {
@@ -89,7 +89,7 @@ void resetPath(navigation_t nav){
             nav.grid[i] = '.'; 
         }
     }   
-}
+} // Reseting the maze after solving it
 
 int findPath(navigation_t nav, int x, int y, int length){
     int nlength = 0, slength = 0, wlength = 0, elength = 0;
@@ -138,63 +138,14 @@ int findPath(navigation_t nav, int x, int y, int length){
             nav.grid[x+y*nav.maxX] = '+';
         }
         return wlength;
-    }
+    } // Recursive function to find the shortest path for the maze
 
     
     
     
     
     
-    
-    
-    
-    /*if(nav.grid[x+y*nav.maxX] == '.'){
-        nav.grid[x+y*nav.maxX] = '+';
-        
-        printf("\n%i\n%i\n%i\n%i\n", slength, nlength, wlength, elength);
-        if(slength == 0 && nlength == 0 && elength == 0 && wlength == 0){
-            nav.grid[x+y*nav.maxX] = '~';
-            return 0;
-        } else{
-            nav.grid[x+y*nav.maxX] = '+';
-            int arr[4] = {wlength, elength, slength, nlength};
-            int smallest = 0;
-            for (int i = 0; i < 4; i++){
-                if(arr[i] != 0){
-                    smallest = arr[i];
-                }
-            }
-            for (int i = 0; i < 4; i++){
-                if(arr[i] != 0 && smallest >= arr[i]){
-                    smallest = arr[i];
-                }
-            }
-            return smallest;
-        }
-    };
-    if(nav.grid[x+y*nav.maxX] == 'S' && length == 0){
-        wlength = findPath(nav, x - 1, y, length + 1);
-        elength = findPath(nav, x + 1, y, length + 1);
-        slength = findPath(nav, x, y - 1, length + 1);
-        nlength = findPath(nav, x, y + 1, length + 1);
-        if(slength > 0 && slength >= wlength && slength >= nlength && slength >= elength){
-            return slength;
-        }
-        if(wlength > 0 && wlength >= slength && wlength >= nlength && wlength >= elength){
-            return wlength;
-        }
-        if(elength > 0 && elength >= slength && elength >= nlength && elength >= wlength){
-            return elength;
-        }
-        if(nlength > 0 && nlength >= wlength && nlength >= slength && nlength >= elength){
-            return nlength;
-        }
-    } else if (nav.grid[x+y*nav.maxX] == 'S' && length != 0){
-        return 0;
-    }*/
-    return 0;
-};
-
+ 
 
 int main(void){
     char cmd;
@@ -204,7 +155,7 @@ int main(void){
         printf("Command? ");
         scanf(" %c", &cmd);
         switch(cmd){
-            case 's':
+            case 's': // Finding the starting position
                 if(nav.grid != NULL){
                     posit = findStart(nav);
                 } else{
@@ -220,7 +171,7 @@ int main(void){
                     printf("The start is at x=%i and y=%i\n", posit.y, posit.x);
                     break;
                 }
-            case 'f':
+            case 'f': // Finding the shortest path
                 if(nav.grid == NULL){
                     break;
                 } else {
@@ -233,7 +184,7 @@ int main(void){
                     printGrid(nav);
                     break;
                 }
-            case 'i':
+            case 'i': // Giving size for the maze and also inputing it
                 cleanNav(nav);
                 newGrid(&nav);
                 if(nav.maxY < 2 || nav.maxX < 2){
@@ -244,13 +195,13 @@ int main(void){
                     inputGrid(nav);
                 }
                 break;
-            case 'p':
+            case 'p': // Printing the maze
                 printGrid(nav);
                 break;
-            case 'r':
+            case 'r': // Reseting the path
                 resetPath(nav);
                 break;
-            case 'q':
+            case 'q': // Cleaning the maze, variables and freeing the pointers
                 cleanNav(nav);
                 break;
             default:
